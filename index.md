@@ -1,3 +1,7 @@
-Coming soon...
-
-<a href="invite.html"><img src="Try%20out%20bot.png" alt= "Try my Discord bot!" height="87" ></a>
+<!doctype html>
+<html>
+  <head>
+    <script>
+      window.location.href = "https://discord.com/application-directory/623698680574115841";
+    </script>
+</head>
