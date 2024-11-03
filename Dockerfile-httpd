@@ -1,0 +1,10 @@
+FROM httpd:2.4
+
+COPY ./public-html/ /usr/local/apache2/htdocs/
+
+COPY legal/*.md /usr/local/apache2/htdocs/legal/
+
+WORKDIR /usr/local/apache2/htdocs/legal/
+RUN find . -name "*.md" | while read file; do mv "${file}" "$(echo ${file} | sed 's/\.md//')"; done
+
+RUN echo "ServerName localhost" >> /usr/local/apache2/conf/httpd.conf

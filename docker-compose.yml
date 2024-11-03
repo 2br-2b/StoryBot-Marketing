@@ -1,0 +1,41 @@
+version: '3'
+
+services:
+  apachehttp:
+    build: 
+      context: .
+      dockerfile: Dockerfile-httpd
+    ports:
+      - "80:80" # Mapping port 80 of the container to host machine's port 80
+
+
+  # https://github.com/jonas-merkle/container-cloudflare-tunnel/
+  cloudflare-tunnel:
+    image: cloudflare/cloudflared
+    #build:
+    #  context: ./src
+    #  dockerfile: ./Dockerfile
+    container_name: cloudflare-tunnel
+    hostname: cloudflare-tunnel
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "10"
+    network_mode: "host"
+    command: tunnel run
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./config/hosts:/etc/hosts
+    environment:
+      - "TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN}"
+    healthcheck:
+      test: ["CMD", "cloudflared", "--version"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    labels:
+      # enbale watchtower updates
+      - "com.centurylinklabs.watchtower.enable=true"
