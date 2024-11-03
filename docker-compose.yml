@@ -6,7 +6,8 @@ services:
       context: .
       dockerfile: Dockerfile-httpd
     ports:
-      - "80:80" # Mapping port 80 of the container to host machine's port 80
+      - "1203:80" # Mapping port 80 of the container to host machine's port 80
+    restart: always
 
 
   # https://github.com/jonas-merkle/container-cloudflare-tunnel/
@@ -17,7 +18,7 @@ services:
     #  dockerfile: ./Dockerfile
     container_name: cloudflare-tunnel
     hostname: cloudflare-tunnel
-    restart: unless-stopped
+    restart: always
     logging:
       driver: "json-file"
       options:
